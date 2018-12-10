@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(loam_velodyne)
 
+## Compile as C++14, supported in ROS Kinetic and newer
+# set_property(TARGET invz_player PROPERTY CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_compile_options(-std=c++14)
+add_definitions( -march=native )
+
+
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   nav_msgs
@@ -13,6 +22,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
+list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
+
 
 include_directories(
   include
@@ -26,13 +37,6 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES loam
 )
-
-## Compile as C++14, supported in ROS Kinetic and newer
-# set_property(TARGET invz_player PROPERTY CXX_STANDARD 17)
-add_compile_options(-std=c++14)
-
-add_definitions( -march=native )
-
 
 add_subdirectory(src/lib)
 
